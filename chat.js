@@ -315,7 +315,7 @@
       form.append('mediaMime', mediaMime);
     }
 
-    fetch('api.php', { method: 'POST', body: form })
+    fetch('api/chat.php', { method: 'POST', body: form })
       .then(res => { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
       .then(data => {
         const delay = Math.max(0, 700 - (Date.now() - startTime));
@@ -327,7 +327,7 @@
       .catch(() => {
         setTimeout(() => {
           hideTyping();
-          addBotMessage("⚠️ I couldn't reach my backend. Make sure **api.php** is running on a PHP server (e.g. XAMPP → start Apache, then place this folder in `C:\\xampp\\htdocs\\Chatbot\\`).");
+          addBotMessage("⚠️ I couldn't reach my backend. Make sure **api/chat.php** is running on a PHP server (e.g. XAMPP → start Apache, then place this folder in `C:\\xampp\\htdocs\\Chatbot\\`).");
         }, 800);
       });
   }
