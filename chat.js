@@ -218,7 +218,7 @@
 
     const avatar = document.createElement('div');
     avatar.className = 'msg-avatar';
-    avatar.textContent = role === 'bot' ? 'C' : '😊';
+    avatar.textContent = role === 'bot' ? 'B' : '😊';
 
     const content = document.createElement('div');
     content.className = 'msg-content';
@@ -274,7 +274,7 @@
 
     const avatar = document.createElement('div');
     avatar.className   = 'msg-avatar';
-    avatar.textContent = 'C';
+    avatar.textContent = 'B';
     avatar.style.cssText = 'background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.76rem;flex-shrink:0';
 
     const bubble = document.createElement('div');
@@ -327,7 +327,7 @@
       .catch(() => {
         setTimeout(() => {
           hideTyping();
-          addBotMessage("⚠️ I couldn't reach my backend. Make sure **api/chat.php** is running on a PHP server (e.g. XAMPP → start Apache, then place this folder in `C:\\xampp\\htdocs\\Chatbot\\`).");
+          addBotMessage("⚠️ I couldn't reach my backend. Make sure **api.php** is running on a PHP server (e.g. XAMPP → start Apache, then place this folder in `C:\\xampp\\htdocs\\Chatbot\\`).");
         }, 800);
       });
   }

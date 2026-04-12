@@ -1,0 +1,19 @@
+# ── Sensitive backend (contains API key) ──────────────────────────
+api/chat.php
+
+# ── Environment / secrets ─────────────────────────────────────────
+.env
+.env.*
+*.env
+config.php
+secrets.php
+
+# ── OS junk ───────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Editor / IDE ──────────────────────────────────────────────────
+.vscode/
+.idea/
+*.code-workspace
