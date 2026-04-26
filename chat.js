@@ -316,7 +316,13 @@
     }
 
     fetch('api/chat.php', { method: 'POST', body: form })
-      .then(res => { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+      .then(async res => { 
+        if (!res.ok) {
+            const text = await res.text();
+            throw new Error(`HTTP ${res.status}: ${text.substring(0, 100)}`);
+        } 
+        return res.json(); 
+      })
       .then(data => {
         const delay = Math.max(0, 700 - (Date.now() - startTime));
         setTimeout(() => {
@@ -324,10 +330,11 @@
           addBotMessage(data.reply || "I'm not sure about that. Could you rephrase?");
         }, delay);
       })
-      .catch(() => {
+      .catch((err) => {
         setTimeout(() => {
           hideTyping();
-          addBotMessage("⚠️ I couldn't reach my backend. Make sure **api.php** is running on a PHP server (e.g. XAMPP → start Apache, then place this folder in `C:\\xampp\\htdocs\\Chatbot\\`).");
+          console.error("Backend Error:", err);
+          addBotMessage(`⚠️ **Backend Connection Failed:**\n\n\`${err.message}\`\n\n_If you are on Vercel, check the "Logs" tab in your Vercel dashboard to see what crashed._`);
         }, 800);
       });
   }
