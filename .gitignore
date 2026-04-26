@@ -1,5 +1,4 @@
 # ── Sensitive backend (contains API key) ──────────────────────────
-api/chat.php
 
 # ── Environment / secrets ─────────────────────────────────────────
 .env
