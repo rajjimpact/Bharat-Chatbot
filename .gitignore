@@ -1,6 +1,4 @@
-# ── Sensitive backend (contains API key) ──────────────────────────
-
-# ── Environment / secrets ─────────────────────────────────────────
+# ── Environment / secrets (NEVER commit these) ────────────────────
 .env
 .env.*
 *.env
@@ -16,3 +14,6 @@ desktop.ini
 .vscode/
 .idea/
 *.code-workspace
+
+# ── Node ──────────────────────────────────────────────────────────
+node_modules/

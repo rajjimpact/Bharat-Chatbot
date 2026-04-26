@@ -315,13 +315,25 @@
       form.append('mediaMime', mediaMime);
     }
 
-    fetch('api/chat.php', { method: 'POST', body: form })
-      .then(async res => { 
-        if (!res.ok) {
-            const text = await res.text();
-            throw new Error(`HTTP ${res.status}: ${text.substring(0, 100)}`);
-        } 
-        return res.json(); 
+    fetch('api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: userText,
+        history: chatHistory.slice(-10),
+        mediaBase64: mediaB64 ? mediaB64.split(',')[1] : '',
+        mediaMime: mediaMime || ''
+      })
+    })
+      .then(async res => {
+        const text = await res.text();
+        try {
+          const data = JSON.parse(text);
+          if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+          return data;
+        } catch (e) {
+          throw new Error(res.ok ? 'Invalid response from server.' : (e.message || `HTTP ${res.status}`));
+        }
       })
       .then(data => {
         const delay = Math.max(0, 700 - (Date.now() - startTime));
@@ -333,8 +345,8 @@
       .catch((err) => {
         setTimeout(() => {
           hideTyping();
-          console.error("Backend Error:", err);
-          addBotMessage(`⚠️ **Backend Connection Failed:**\n\n\`${err.message}\`\n\n_If you are on Vercel, check the "Logs" tab in your Vercel dashboard to see what crashed._`);
+          console.error('Backend Error:', err);
+          addBotMessage(`⚠️ **${err.message}**\n\n_Make sure you've added your Grok API keys in Vercel → Project Settings → Environment Variables._`);
         }, 800);
       });
   }
