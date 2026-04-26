@@ -13,6 +13,18 @@
 
 declare(strict_types=1);
 
+// Catch all PHP errors and return them as valid JSON so the frontend can read them!
+set_error_handler(function($errno, $errstr, $errfile, $errline) {
+    http_response_code(500);
+    echo json_encode(['error' => "PHP Error [$errno]: $errstr on line $errline"]);
+    exit;
+});
+set_exception_handler(function($e) {
+    http_response_code(500);
+    echo json_encode(['error' => "PHP Exception: " . $e->getMessage()]);
+    exit;
+});
+
 // ════════════════════════════════════════════════════════════════
 //   ✏️  GEMINI API KEY IS NOW READ FROM ENVIRONMENT VARIABLES
 // ════════════════════════════════════════════════════════════════
