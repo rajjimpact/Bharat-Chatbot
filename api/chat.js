@@ -1,7 +1,7 @@
 /**
  * Bharat Chatbot — api/chat.js
  * Native Vercel Node.js Serverless Function
- * Provider: xAI Grok with 2-key rotation
+ * Provider: xAI Grok (model: grok-beta) with 2-key rotation
  *
  * Environment Variables (set in Vercel Dashboard → Settings → Environment Variables):
  *   GROK_API_KEY_1  — Your first xAI Grok API key
@@ -93,7 +93,7 @@ export default async function handler(req, res) {
           'Authorization': `Bearer ${apiKey}`
         },
         body: JSON.stringify({
-          model: 'grok-3-mini',
+          model: 'grok-beta',
           messages,
           temperature: 0.75,
           max_tokens: 1024
@@ -107,8 +107,10 @@ export default async function handler(req, res) {
       }
 
       if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        lastError = `API Error ${response.status} on ${keyLabel}: ${errData.error?.message || 'Unknown'}`;
+        const errBody = await response.text().catch(() => '');
+        let errMsg = errBody;
+        try { const j = JSON.parse(errBody); errMsg = j.error?.message || j.message || errBody; } catch(_) {}
+        lastError = `API Error ${response.status} on ${keyLabel}: ${errMsg}`;
         continue;
       }
 
